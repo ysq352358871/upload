@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.wrap{
+				width: 200px;height: 15px;
+				border: 1px solid #ccc;
+				position: relative;
+			}
+			.box{
+				position: absolute;
+				top:0;left:0;
+				width:0%;height: 100%;
+				background-color: red;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var input=document.querySelector("input");
+				var box=document.querySelector(".box");
+				input.onchange=function(){
+					var ajax=new XMLHttpRequest();
+					console.log(ajax)
+					var newobj=new FormData();
+					var data=this.files[0];
+					newobj.append("file",data);
+					ajax.onload=function(){
+						console.log(ajax.response);
+					}
+					ajax.upload.onprogress=function(e){
+						var total=e.total;
+						var loaded=e.loaded;
+						var bili=loaded/total*100;
+						box.style.width=bili+"%";
+						box.innerHTML=bili.toFixed(2);
+					}
+					ajax.open("post","upload.php");
+//					ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+					ajax.send(newobj);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="file" name="file" /><br>
+		<div class="wrap">
+			<div class="box"></div>
+		</div>
+		
+	</body>
+</html>
